@@ -14,6 +14,7 @@ import { MatSnackBar, MatSnackBarRef, SimpleSnackBar } from '@angular/material/s
 export class CategoryComponent implements OnInit {
 
 
+
   constructor(private categoryService:CategoryService,
               public dialog: MatDialog,private snackBar:MatSnackBar) { }
 
@@ -62,6 +63,26 @@ export class CategoryComponent implements OnInit {
         }
 
       });
+  }
+
+  edit(id: number,name: string,description: string) {
+    const dialogRef = this.dialog.open(NewCategoryComponent, {
+        width: '450px',
+        data: {id:id,name: name, description: description},
+    });
+
+    dialogRef.afterClosed().subscribe((result:any) => {
+
+      if(result==1){
+        this.openSnackBar("Categoria Actualizada","Exito")
+        this.getCategories()
+      }else if(result==2){
+        this.openSnackBar("Se produjo un error al actualizar categoria","Error")
+        this.getCategories()
+      }
+
+    });
+
   }
 
 

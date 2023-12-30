@@ -32,6 +32,15 @@ export class CategoryService {
     return this.http.post(endopoint,body)
   }
 
+  /**
+   * update categoria
+  */
+  update(body:any,id:any){
+    const endopoint=`${base_url}/categories/${id}`
+    return this.http.put(endopoint,body)
+  }
+
+
 
 
 }
