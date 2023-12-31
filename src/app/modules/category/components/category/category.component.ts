@@ -5,6 +5,7 @@ import { CategoryElement } from './CategoryElement';
 import { MatDialog } from '@angular/material/dialog';
 import { NewCategoryComponent } from '../new-category/new-category.component';
 import { MatSnackBar, MatSnackBarRef, SimpleSnackBar } from '@angular/material/snack-bar';
+import { ConfirmComponent } from 'src/app/modules/shared/components/confirm/confirm.component';
 
 @Component({
   selector: 'app-category',
@@ -12,8 +13,6 @@ import { MatSnackBar, MatSnackBarRef, SimpleSnackBar } from '@angular/material/s
   styleUrls: ['./category.component.css']
 })
 export class CategoryComponent implements OnInit {
-
-
 
   constructor(private categoryService:CategoryService,
               public dialog: MatDialog,private snackBar:MatSnackBar) { }
@@ -82,6 +81,35 @@ export class CategoryComponent implements OnInit {
       }
 
     });
+  }
+
+  buscar(palabra: string) {
+    if(palabra.length===0){
+      return this.getCategories()
+    }
+    return this.categoryService.getCategoryById(palabra)
+            .subscribe((resp:any)=>{
+               this.procesarCategoriasResponse(resp)
+            })
+  }
+
+  delete(id: number) {
+    const dialogRef = this.dialog.open(ConfirmComponent, {
+      width: '300px',
+      data: {id:id},
+  });
+
+  dialogRef.afterClosed().subscribe((result:any) => {
+
+    if(result==1){
+      this.openSnackBar("Categoria Eliminada","Exito")
+      this.getCategories()
+    }else if(result==2){
+      this.openSnackBar("Se produjo un error al eliminar categoria","Error")
+      this.getCategories()
+    }
+
+  });
 
   }
 

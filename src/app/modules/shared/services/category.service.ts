@@ -40,7 +40,20 @@ export class CategoryService {
     return this.http.put(endopoint,body)
   }
 
+  /**
+   * delete categoria
+  */
+  delete(id:any){
+    const endopoint=`${base_url}/categories/${id}`
+    return this.http.delete(endopoint,id)
+  }
 
-
+   /**
+   *  getById categoria
+  */
+   getCategoryById(id:any){
+    const endopoint=`${base_url}/categories/${id}`
+    return this.http.get(endopoint,id)
+  }
 
 }
