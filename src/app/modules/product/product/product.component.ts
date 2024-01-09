@@ -14,7 +14,6 @@ import { NewProductComponent } from '../new-product/new-product.component';
 })
 export class ProductComponent implements OnInit {
 
-
   constructor(private productService:ProductService,
               public dialog: MatDialog,private snackBar:MatSnackBar) { }
 
@@ -45,7 +44,7 @@ export class ProductComponent implements OnInit {
     if(resp.metadata[0].code=="00"){
       let listCProduct=resp.productResponse.products
       listCProduct.forEach((element:ProductElement)=>{
-        element.category=element.category.name
+        //element.category=element.category.name
         element.picture='data:image/jpeg;base64,'+element.picture
         dataProduct.push(element)
       })
@@ -79,6 +78,25 @@ openSnackBar(message:string,action:string): MatSnackBarRef<SimpleSnackBar>{
     duration: 2000
   })
 }
+
+  edit(id: number,name: string,price:number,account:number,category: any) {
+    const dialogRef = this.dialog.open(NewProductComponent ,{
+      width: '450px',
+      data: {id:id, name:name, price:price, account:account, category:category},
+    });
+
+    dialogRef.afterClosed().subscribe((result:any) => {
+      if(result==1){
+        this.openSnackBar("Producto editado","Exito")
+        this.getProducts()
+      }else if(result==2){
+        this.openSnackBar("Se produjo un error al editar producto","Error")
+        this.getProducts()
+      }
+
+    });
+
+  }
 
 
 

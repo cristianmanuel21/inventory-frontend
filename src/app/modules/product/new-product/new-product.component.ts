@@ -37,7 +37,21 @@ private dialogRef:MatDialogRef<NewProductComponent>,
     category:['',Validators.required],
     picture:['',Validators.required]
   })
+  if(data!=null){
+    this.updateForm(data)
+    this.estadoFormulario="Actualizar"
+
+  }
 }
+  updateForm(data: any) {
+    this.productForm=this.fb.group({
+      name:[data.name,Validators.required],
+      price:[data.price,Validators.required],
+      account:[data.account,Validators.required],
+      category:[data.category.id,Validators.required],
+      picture:['',Validators.required]
+    })
+  }
 
 onCancel() {
     this.dialogRef.close(3)
@@ -59,6 +73,16 @@ onSave() {
   uploadImageData.append('account',data.account)
   uploadImageData.append('categoryId',data.category)
 
+  if(this.data!=null){
+    //update product
+    this.productService.updateProduct(uploadImageData,this.data.id)
+      .subscribe((data:any)=>{
+        this.dialogRef.close(1)
+      },(error:any)=>{
+        this.dialogRef.close(2)
+      })
+
+  }else{
   //call the productService
   this.productService.saveProduct(uploadImageData)
       .subscribe((data:any)=>{
@@ -66,9 +90,7 @@ onSave() {
       },(error:any)=>{
         this.dialogRef.close(2)
       })
-
-
-
+  }
 }
 
 getCategories(){
@@ -86,6 +108,8 @@ onFileChanged(event: any) {
   console.log(this.selectedFiles)
   this.nameImg=event.target.files[0].name
 }
+
+
 
 
 }
