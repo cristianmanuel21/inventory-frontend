@@ -9,6 +9,7 @@ const base_url= environment.base_url;
 })
 export class ProductService {
 
+
   constructor(private http:HttpClient) { }
 
   /**
@@ -32,6 +33,19 @@ export class ProductService {
   updateProduct(body:any,id:any){
     const endpoint=`${base_url}/products/${id}`
     return this.http.put(endpoint,body)
+  }
+
+  deleteProduct(id:any){
+    const endpoint=`${base_url}/products/${id}`
+    return this.http.delete(endpoint)
+  }
+
+  /*
+  * search product by name
+  */
+  getProducByName(name:any) {
+    const endpoint=`${base_url}/products/name/${name}`
+    return this.http.get(endpoint)
   }
 
 }
